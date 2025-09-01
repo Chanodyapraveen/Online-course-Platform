@@ -1,0 +1,63 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  name      String
+  email     String    @unique
+  password  String
+  courses   Course[]  @relation("UserCourses")
+  enrollments Enrollment[]
+}
+
+model Course {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String
+  price       Float
+  createdBy   User      @relation("UserCourses", fields: [createdById], references: [id])
+  createdById Int
+  enrollments Enrollment[]
+
+  Lesson Lesson[]
+
+  Category Category[]
+}
+
+model Enrollment {
+  id       Int   @id @default(autoincrement())
+  user     User  @relation(fields: [userId], references: [id])
+  userId   Int
+  course   Course @relation(fields: [courseId], references: [id])
+  courseId Int
+}
+
+  model Lesson {
+  id        String   @id @default(cuid())
+  title     String
+  contentUrl String
+  type      String   @default("VIDEO")
+  createdAt DateTime  @default(now())
+
+  course   Course   @relation(fields: [courseId], references: [id])
+  courseId Int
+}
+
+model Category {
+  id      Int      @id @default(autoincrement())
+  name    String   @unique
+  courses Course[]
+}
+
