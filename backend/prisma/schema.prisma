@@ -1,6 +1,7 @@
 // schema.prisma
 generator client {
   provider = "prisma-client-js"
+  output = "../generated/prisma"
 }
 
 datasource db {
@@ -30,6 +31,7 @@ model User {
   forumPosts       ForumPost[]
   payments         Payment[]
   certificates     Certificate[]
+  submissions      Submission[]
 }
 
 // COURSE model
@@ -46,11 +48,13 @@ model Course {
   // Relations
   instructor  User      @relation("InstructorCourses", fields: [instructorId], references: [id])
   instructorId Int
-  contents    CourseContent[]
-  enrollments Enrollment[]
-  quizzes     Quiz[]
-  assignments Assignment[]
-  forumPosts  ForumPost[]
+  contents      CourseContent[]
+  enrollments   Enrollment[]
+  quizzes       Quiz[]
+  assignments   Assignment[]
+  forumPosts    ForumPost[]
+  payments      Payment[]
+  certificates  Certificate[]
 }
 
 // Course content (videos, pdfs, etc.)
@@ -87,10 +91,18 @@ model Quiz {
 model Question {
   id        Int     @id @default(autoincrement())
   text      String
-  options   String[]  // multiple-choice options
   answer    String    // correct answer
   quiz      Quiz    @relation(fields: [quizId], references: [id])
   quizId    Int
+  options   Option[]
+}
+
+// Option model for multiple-choice options
+model Option {
+  id         Int      @id @default(autoincrement())
+  value      String
+  question   Question @relation(fields: [questionId], references: [id])
+  questionId Int
 }
 
 // Assignments

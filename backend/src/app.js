@@ -8,7 +8,9 @@ const prisma = new PrismaClient();
 app.use(cors());
 app.use(express.json());
 
-// ✅ Routes will go here
+
+const userRoutes = require('./routes/userRoutes');
+app.use('/api/users', userRoutes);
 
 app.listen(5000, () => {
   console.log("🚀 Server running at http://localhost:5000");
