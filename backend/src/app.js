@@ -1,13 +1,15 @@
-// Entry point for Express app
-const express = require('express');
+import express from "express";
+import cors from "cors";
+import { PrismaClient } from "@prisma/client";
+
 const app = express();
-const routes = require('./routes');
-require('dotenv').config();
+const prisma = new PrismaClient();
 
+app.use(cors());
 app.use(express.json());
-app.use('/api', routes);
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+// ✅ Routes will go here
+
+app.listen(5000, () => {
+  console.log("🚀 Server running at http://localhost:5000");
 });
