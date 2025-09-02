@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const { getAllEnrollments } = require("../controllers/enrollment.controller.js");
 
-// Placeholder controller functions
-router.get("/", (req, res) => res.json({ message: "All enrollments" }));
+router.get("/", getAllEnrollments);
 
 module.exports = router;

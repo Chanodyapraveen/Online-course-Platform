@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const { getAllMessages } = require("../controllers/message.controller.js");
 
-// Placeholder controller functions
-router.get("/", (req, res) => res.json({ message: "All messages" }));
+router.get("/", getAllMessages);
 
 module.exports = router;

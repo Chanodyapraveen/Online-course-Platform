@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const { getAllAssignments } = require("../controllers/assignment.controller.js");
 
-// Placeholder controller functions
-router.get("/", (req, res) => res.json({ message: "All assignments" }));
+router.get("/", getAllAssignments);
 
 module.exports = router;

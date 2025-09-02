@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const { getAllCertificates } = require("../controllers/certificate.controller.js");
 
-// Placeholder controller functions
-router.get("/", (req, res) => res.json({ message: "All certificates" }));
+router.get("/", getAllCertificates);
 
 module.exports = router;

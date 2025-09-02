@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const { getAllPayments } = require("../controllers/payment.controller.js");
 
-// Placeholder controller functions
-router.get("/", (req, res) => res.json({ message: "All payments" }));
+router.get("/", getAllPayments);
 
 module.exports = router;

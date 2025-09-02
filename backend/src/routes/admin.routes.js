@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const { getAdminDashboard } = require("../controllers/admin.controller.js");
 
-// Placeholder controller functions
-router.get("/", (req, res) => res.json({ message: "Admin route" }));
+router.get("/", getAdminDashboard);
 
 module.exports = router;

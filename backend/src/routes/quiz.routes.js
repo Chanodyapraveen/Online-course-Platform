@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const { getAllQuizzes } = require("../controllers/quiz.controller.js");
 
-// Placeholder controller functions
-router.get("/", (req, res) => res.json({ message: "All quizzes" }));
+router.get("/", getAllQuizzes);
 
 module.exports = router;

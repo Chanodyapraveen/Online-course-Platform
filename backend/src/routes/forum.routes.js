@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const { getAllForumPosts } = require("../controllers/forum.controller.js");
 
-// Placeholder controller functions
-router.get("/", (req, res) => res.json({ message: "All forum posts" }));
+router.get("/", getAllForumPosts);
 
 module.exports = router;
