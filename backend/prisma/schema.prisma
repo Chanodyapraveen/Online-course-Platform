@@ -1,7 +1,7 @@
 // schema.prisma
 generator client {
   provider = "prisma-client-js"
-  output = "../generated/prisma"
+  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -13,21 +13,21 @@ datasource db {
 
 // USERS: Students, Instructors, Admins
 model User {
-  id          Int       @id @default(autoincrement())
-  name        String
-  email       String    @unique
-  password    String
-  role        String    @default("STUDENT") // STUDENT, INSTRUCTOR, ADMIN
-  bio         String?
-  profilePic  String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id         Int      @id @default(autoincrement())
+  name       String
+  email      String   @unique
+  password   String
+  role       String   @default("STUDENT") // STUDENT, INSTRUCTOR, ADMIN
+  bio        String?
+  profilePic String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   // Relations
-  coursesCreated   Course[]     @relation("InstructorCourses")
+  coursesCreated   Course[]      @relation("InstructorCourses")
   enrollments      Enrollment[]
-  messagesSent     Message[]    @relation("MessagesSent")
-  messagesReceived Message[]    @relation("MessagesReceived")
+  messagesSent     Message[]     @relation("MessagesSent")
+  messagesReceived Message[]     @relation("MessagesReceived")
   forumPosts       ForumPost[]
   payments         Payment[]
   certificates     Certificate[]
@@ -36,35 +36,35 @@ model User {
 
 // COURSE model
 model Course {
-  id          Int       @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   title       String
   description String
   category    String
   difficulty  String
-  price       Float     @default(0.0)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  price       Float    @default(0.0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   // Relations
-  instructor  User      @relation("InstructorCourses", fields: [instructorId], references: [id])
+  instructor   User            @relation("InstructorCourses", fields: [instructorId], references: [id])
   instructorId Int
-  contents      CourseContent[]
-  enrollments   Enrollment[]
-  quizzes       Quiz[]
-  assignments   Assignment[]
-  forumPosts    ForumPost[]
-  payments      Payment[]
-  certificates  Certificate[]
+  contents     CourseContent[]
+  enrollments  Enrollment[]
+  quizzes      Quiz[]
+  assignments  Assignment[]
+  forumPosts   ForumPost[]
+  payments     Payment[]
+  certificates Certificate[]
 }
 
 // Course content (videos, pdfs, etc.)
 model CourseContent {
-  id        Int     @id @default(autoincrement())
-  type      String   // VIDEO, PDF, QUIZ, ASSIGNMENT
-  title     String
-  url       String
-  course    Course  @relation(fields: [courseId], references: [id])
-  courseId  Int
+  id       Int    @id @default(autoincrement())
+  type     String // VIDEO, PDF, QUIZ, ASSIGNMENT
+  title    String
+  url      String
+  course   Course @relation(fields: [courseId], references: [id])
+  courseId Int
 }
 
 // Enrollment: Student <-> Course
@@ -80,21 +80,21 @@ model Enrollment {
 
 // Quizzes
 model Quiz {
-  id        Int       @id @default(autoincrement())
+  id        Int        @id @default(autoincrement())
   title     String
-  course    Course    @relation(fields: [courseId], references: [id])
+  course    Course     @relation(fields: [courseId], references: [id])
   courseId  Int
   questions Question[]
 }
 
 // Quiz questions
 model Question {
-  id        Int     @id @default(autoincrement())
-  text      String
-  answer    String    // correct answer
-  quiz      Quiz    @relation(fields: [quizId], references: [id])
-  quizId    Int
-  options   Option[]
+  id      Int      @id @default(autoincrement())
+  text    String
+  answer  String // correct answer
+  quiz    Quiz     @relation(fields: [quizId], references: [id])
+  quizId  Int
+  options Option[]
 }
 
 // Option model for multiple-choice options
@@ -107,32 +107,32 @@ model Option {
 
 // Assignments
 model Assignment {
-  id          Int     @id @default(autoincrement())
+  id          Int          @id @default(autoincrement())
   title       String
   description String
-  course      Course  @relation(fields: [courseId], references: [id])
+  course      Course       @relation(fields: [courseId], references: [id])
   courseId    Int
   submissions Submission[]
 }
 
 // Assignment submissions
 model Submission {
-  id          Int     @id @default(autoincrement())
-  fileUrl     String
-  grade       Float?
-  feedback    String?
-  assignment  Assignment @relation(fields: [assignmentId], references: [id])
+  id           Int        @id @default(autoincrement())
+  fileUrl      String
+  grade        Float?
+  feedback     String?
+  assignment   Assignment @relation(fields: [assignmentId], references: [id])
   assignmentId Int
-  student     User   @relation(fields: [studentId], references: [id])
-  studentId   Int
+  student      User       @relation(fields: [studentId], references: [id])
+  studentId    Int
 }
 
 // Payments
 model Payment {
   id        Int      @id @default(autoincrement())
   amount    Float
-  status    String   // PENDING, COMPLETED, FAILED
-  method    String   // e.g., PayPal, Stripe
+  status    String // PENDING, COMPLETED, FAILED
+  method    String // e.g., PayPal, Stripe
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id])
   userId    Int
@@ -152,13 +152,13 @@ model Certificate {
 
 // Messaging (student <-> instructor)
 model Message {
-  id          Int      @id @default(autoincrement())
-  content     String
-  createdAt   DateTime @default(now())
-  sender      User     @relation("MessagesSent", fields: [senderId], references: [id])
-  senderId    Int
-  receiver    User     @relation("MessagesReceived", fields: [receiverId], references: [id])
-  receiverId  Int
+  id         Int      @id @default(autoincrement())
+  content    String
+  createdAt  DateTime @default(now())
+  sender     User     @relation("MessagesSent", fields: [senderId], references: [id])
+  senderId   Int
+  receiver   User     @relation("MessagesReceived", fields: [receiverId], references: [id])
+  receiverId Int
 }
 
 // Forum posts (per course)
@@ -171,10 +171,11 @@ model ForumPost {
   author    User     @relation(fields: [authorId], references: [id])
   authorId  Int
 }
+
 model Admin {
-  id       Int     @id @default(autoincrement())
+  id       Int    @id @default(autoincrement())
   name     String
-  email    String  @unique
+  email    String @unique
   password String
-  role     String  @default("ADMIN")
+  role     String @default("ADMIN")
 }
