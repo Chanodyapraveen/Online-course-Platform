@@ -5,6 +5,6 @@ const { createCourse, getAllCourses } = require("../controllers/course.controlle
 const router = express.Router();
 
 router.post("/create", authMiddleware(["INSTRUCTOR", "ADMIN"]), createCourse);
-router.get("/", authMiddleware(["STUDENT", "INSTRUCTOR", "ADMIN"]), getAllCourses);
+router.get("/", authMiddleware(), getAllCourses);
 
 module.exports = router;

@@ -1,4 +1,8 @@
 const userService = require('../services/userService');
+const { PrismaClient } = require('@prisma/client');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const prisma = new PrismaClient();
 
 exports.createUser = async (req, res) => {
   try {
@@ -35,5 +39,25 @@ exports.deleteUser = async (req, res) => {
     res.status(204).end();
   } catch (err) {
     res.status(400).json({ error: err.message });
+  }
+};
+
+exports.loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await userService.getUserByEmail(email);
+    if (!user) return res.status(400).json({ error: 'Invalid credentials' });
+
+
+  if (password !== user.password) return res.status(400).json({ error: 'Invalid credentials' });
+
+    const token = jwt.sign(
+      { id: user.id, email: user.email, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: '1d' }
+    );
+    res.json({ token, user: { id: user.id, name: user.name, email: user.email, role: user.role } });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 };
