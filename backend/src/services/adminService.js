@@ -1,8 +1,32 @@
-const { PrismaClient } = require('@prisma/client');
+const { PrismaClient } = require("../../generated/prisma");
 const prisma = new PrismaClient();
 
-exports.createAdmin = async (data) => prisma.user.create({ data: { ...data, role: 'ADMIN' } });
-exports.getAllAdmins = async () => prisma.user.findMany({ where: { role: 'ADMIN' } });
-exports.getAdminById = async (id) => prisma.user.findUnique({ where: { id: Number(id), role: 'ADMIN' } });
-exports.updateAdmin = async (id, data) => prisma.user.update({ where: { id: Number(id), role: 'ADMIN' }, data });
-exports.deleteAdmin = async (id) => prisma.user.delete({ where: { id: Number(id), role: 'ADMIN' } });
+exports.createAdmin = async (data) => {
+	return await prisma.admin.create({
+		data: {
+			name: data.name,
+			email: data.email,
+			password: data.password, // ⚠️ hash this later with bcrypt
+			role: data.role || "ADMIN"
+		}
+	});
+};
+
+exports.getAllAdmins = async () => {
+	return await prisma.admin.findMany();
+};
+
+exports.getAdminById = async (id) => {
+	return await prisma.admin.findUnique({ where: { id } });
+};
+
+exports.updateAdmin = async (id, data) => {
+	return await prisma.admin.update({
+		where: { id },
+		data,
+	});
+};
+
+exports.deleteAdmin = async (id) => {
+	return await prisma.admin.delete({ where: { id } });
+};

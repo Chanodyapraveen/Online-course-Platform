@@ -1,13 +1,16 @@
 require('dotenv').config();
 const express = require("express");
+const bodyParser = require("body-parser");
 const cors = require("cors");
 const { PrismaClient } = require("@prisma/client");
 
 const app = express();
 const prisma = new PrismaClient();
 
+
 app.use(cors());
 app.use(express.json());
+app.use(bodyParser.json());
 
 
 
@@ -21,7 +24,7 @@ const quizRoutes = require('./routes/quiz.routes');
 const assignmentRoutes = require('./routes/assignment.routes');
 const messageRoutes = require('./routes/message.routes');
 const certificateRoutes = require('./routes/certificate.routes');
-const adminRoutes = require('./routes/admin.routes');
+const adminRoutes = require('./routes/admin.routes.js');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
@@ -34,7 +37,8 @@ app.use('/api/assignments', assignmentRoutes);
 app.use('/api/messages', messageRoutes);
 app.use('/api/certificates', certificateRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/admins', adminRoutes); // New route as requested
 
-app.listen(5000, () => {
-  console.log("🚀 Server running at http://localhost:5000");
-});
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

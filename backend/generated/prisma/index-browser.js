@@ -225,6 +225,14 @@ exports.Prisma.ForumPostScalarFieldEnum = {
   authorId: 'authorId'
 };
 
+exports.Prisma.AdminScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  password: 'password',
+  role: 'role'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -249,7 +257,8 @@ exports.Prisma.ModelName = {
   Payment: 'Payment',
   Certificate: 'Certificate',
   Message: 'Message',
-  ForumPost: 'ForumPost'
+  ForumPost: 'ForumPost',
+  Admin: 'Admin'
 };
 
 /**

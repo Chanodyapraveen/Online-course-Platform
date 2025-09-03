@@ -171,3 +171,10 @@ model ForumPost {
   author    User     @relation(fields: [authorId], references: [id])
   authorId  Int
 }
+model Admin {
+  id       Int     @id @default(autoincrement())
+  name     String
+  email    String  @unique
+  password String
+  role     String  @default("ADMIN")
+}
