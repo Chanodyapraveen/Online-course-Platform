@@ -1,3 +1,21 @@
+// Upload course material
+exports.uploadMaterial = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { originalname, filename, mimetype, path } = req.file;
+    const content = await prisma.courseContent.create({
+      data: {
+        type: mimetype.startsWith('video') ? 'VIDEO' : 'PDF',
+        title: originalname,
+        url: path,
+        courseId: Number(id)
+      }
+    });
+    res.status(201).json(content);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
