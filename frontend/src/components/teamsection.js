@@ -1,29 +1,32 @@
 import React from "react";
 import { ArrowUpRight } from "lucide-react";
-
+import matthewRyanImg from "../assets/matthew-ryan.png";
+import danieljosephImg from "../assets/daniel-joseph.png";
+import jamesmichaelImg from "../assets/james-michael.png";
+import adambennettImg from "../assets/adam-bennett.png";
 const mentors = [
 	{
 		name: "Matthew Ryan",
 		role: "Product Designer",
-		img: "/assets/matthew.png",
+		img: matthewRyanImg, 
 		bg: "bg-pink-200",
 	},
 	{
 		name: "Daniel Joseph",
 		role: "Software Engineer",
-		img: "/assets/daniel.png",
+		img: danieljosephImg,
 		bg: "bg-pink-100",
 	},
 	{
 		name: "Adam Bennett",
 		role: "Digital Marketer",
-		img: "/assets/adam.png",
+		img: adambennettImg,
 		bg: "bg-yellow-100",
 	},
 	{
 		name: "James Michael",
 		role: "Digital Marketer",
-		img: "/assets/james.png",
+		img: jamesmichaelImg,
 		bg: "bg-orange-100",
 	},
 ];
