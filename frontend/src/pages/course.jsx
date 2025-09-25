@@ -1,11 +1,24 @@
+import TeamSection from "../components/teamsection";
 import React from "react";
 import { ArrowUpRight } from "lucide-react";
-
+import Header from "../components/Header";
+import htmlCssJsImg from "../assets/HTML CSS JS Course.png";
+import stakeholdermanagement from "../assets/stakeholder-management.png";
+import googleAdsImg from "../assets/google-ads-course.png";
+import uxResearchImg from "../assets/ux-research-course.png";
+import financialAccountingImg from "../assets/accounting-course.png";
+import designSystemsImg from "../assets/design-systems-course.png";
+import digitalMarketingImg from "../assets/digital-marketing-course.png";
+import htmlcssbeyondcourse from "../assets/html-css-beyond-course.png";
+import uiuxessentialscourse from "../assets/uiux-essentials-course.png";
+import Footer from "../components/Footer";
 export default function CourseSection() {
   return (
-    <section className="relative w-full min-h-screen bg-[#011813] flex flex-col items-center py-16">
+    <>
+      <Header />
+    <section className="relative w-full min-h-screen bg-white flex flex-col items-center pt-8 md:pt-12 lg:pt-16">
       {/* Container */}
-      <div className="relative w-full max-w-[1240px] mx-auto">
+  <div className="relative w-full max-w-[95vw] xl:max-w-[1240px] mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
         {/* Breadcrumb */}
         <div className="flex items-center mb-4 text-base font-outfit text-[#011813]">
           <span className="font-normal">Home</span>
@@ -13,12 +26,12 @@ export default function CourseSection() {
           <span className="font-normal text-[#009D77]">Courses</span>
         </div>
         {/* Section Title Block */}
-        <div className="flex items-center justify-between mb-12">
-          <h1 className="text-white font-outfit font-bold text-5xl md:text-7xl leading-tight max-w-3xl">
+  <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 md:mb-12 gap-4 md:gap-0">
+          <h1 className="text-black font-outfit font-bold text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl leading-tight max-w-full md:max-w-3xl">
             We Offer an Outstanding<br />Learning Experience
           </h1>
           {/* Dot Image */}
-          <svg width="108" height="46" className="hidden md:block" viewBox="0 0 108 46" fill="none">
+           <svg width="108" height="46" className="hidden md:block" viewBox="0 0 108 46" fill="none">
             {[0, 19, 38, 57, 76, 96].map((x) =>
               [0, 21, 45].map((y) => (
                 <circle key={`${x}-${y}`} cx={x + 6} cy={y + 6} r="4" fill="#8D8E8F" />
@@ -27,17 +40,14 @@ export default function CourseSection() {
           </svg>
         </div>
         {/* Course Card */}
-        <div className="relative w-full max-w-[1200px] mx-auto bg-white/5 border border-[#E7E7E8] rounded-2xl flex flex-row items-center p-8 gap-8 shadow-lg">
+  <div className="relative w-full max-w-full xl:max-w-[1200px] mx-auto bg-white/5 border border-[#E7E7E8] rounded-2xl flex flex-col md:flex-row items-center p-4 sm:p-6 md:p-8 gap-6 md:gap-8 shadow-lg">
           {/* Image Wrapper */}
-          <div className="w-[376px] h-[376px] rounded-xl overflow-hidden flex-shrink-0 relative bg-black/10">
-            <img
-              src="/assets/html-css-js-course.jpg"
-              alt="HTML CSS JS Course"
-              className="w-full h-full object-cover"
-            />
+          <div className="w-full h-56 sm:h-72 md:w-[300px] md:h-[300px] lg:w-[376px] lg:h-[376px] rounded-xl overflow-hidden flex-shrink-0 relative bg-black/10 mb-4 md:mb-0">
+           <img src={htmlCssJsImg} alt="HTML CSS JS Course" className="w-full h-full object-cover" />
+            
           </div>
           {/* Card Body */}
-          <div className="flex-1 flex flex-col justify-between h-full py-2">
+          <div className="flex-1 flex flex-col justify-between h-full py-2 min-w-0">
             {/* Badge Block */}
             <div className="flex items-center gap-4 mb-4">
               <span className="bg-[#F0F0F0] text-[#011813] font-outfit font-medium px-4 py-2 rounded-lg text-base">
@@ -102,6 +112,162 @@ export default function CourseSection() {
           </div>
         </div>
       </div>
+      {/* Course Cards Grid Section */}
+  <div className="w-full flex flex-col items-center mt-8 md:mt-12 lg:mt-16">
+        <h2 className="font-outfit font-semibold text-4xl md:text-5xl text-[#011813] text-center mb-8">
+          Explore Our All Courses
+        </h2>
+        {/* Category Tabs */}
+  <div className="flex flex-wrap gap-2 sm:gap-3 md:gap-4 justify-center mb-6 md:mb-10">
+          <button className="flex items-center bg-[#009D77] text-white font-outfit font-medium px-6 py-3 rounded-full border border-[#009D77]">
+            All Categories
+          </button>
+          <button className="flex items-center bg-white text-[#4E5255] font-outfit font-medium px-6 py-3 rounded-full border border-[#E7E7E8]">
+            Development
+          </button>
+          <button className="flex items-center bg-white text-[#4E5255] font-outfit font-medium px-6 py-3 rounded-full border border-[#E7E7E8]">
+            UI/UX Design
+          </button>
+          <button className="flex items-center bg-white text-[#4E5255] font-outfit font-medium px-6 py-3 rounded-full border border-[#E7E7E8]">
+            Project Management
+          </button>
+          <button className="flex items-center bg-white text-[#4E5255] font-outfit font-medium px-6 py-3 rounded-full border border-[#E7E7E8]">
+            Accounting
+          </button>
+          <button className="flex items-center bg-white text-[#4E5255] font-outfit font-medium px-6 py-3 rounded-full border border-[#E7E7E8]">
+            Marketing
+          </button>
+        </div>
+        {/* Cards Grid */}
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-full xl:max-w-[1200px] mx-auto mb-8 md:mb-12">
+          {/* Card 1 */}
+          <div className="bg-white rounded-xl shadow-md p-3 sm:p-4 flex flex-col">
+           <img src={htmlCssJsImg} alt="HTML CSS JS Course" className="w-full h-48 object-cover rounded-lg mb-4" />
+            <div className="flex items-center justify-between mb-2">
+              <span className="px-4 py-2 rounded-lg text-base font-outfit font-medium bg-[#F0F0F0] text-[#011813]">Project Management</span>
+              <span className="font-outfit font-semibold text-xl text-[#009D77]">$190.00</span>
+            </div>
+            <h3 className="font-outfit font-medium text-lg text-[#011813] mb-2">HTML, CSS, and JavaScript</h3>
+            <div className="flex items-center gap-6 text-[#4E5255] text-sm font-outfit">
+              <span>4hr 35min</span>
+              <span>30 lectures</span>
+            </div>
+          </div>
+          {/* Card 2 */}
+          <div className="bg-white rounded-xl shadow-md p-4 flex flex-col">
+            <img src={stakeholdermanagement} alt="HTML CSS JS Course"  className="w-full h-48 object-cover rounded-lg mb-4" />
+            <div className="flex items-center justify-between mb-2">
+              <span className="px-4 py-2 rounded-lg text-base font-outfit font-medium bg-[#F0F0F0] text-[#011813]">Development</span>
+              <span className="font-outfit font-semibold text-xl text-[#009D77]">$160.00</span>
+            </div>
+            <h3 className="font-outfit font-medium text-lg text-[#011813] mb-2">Stakeholders Management</h3>
+            <div className="flex items-center gap-6 text-[#4E5255] text-sm font-outfit">
+              <span>2hr 35min</span>
+              <span>20 lectures</span>
+            </div>
+          </div>
+          {/* Card 3 */}
+          <div className="bg-white rounded-xl shadow-md p-4 flex flex-col">
+           <img src={googleAdsImg} alt="Google Ads & PPC Campaigns" className="w-full h-48 object-cover rounded-lg mb-4" />
+            <div className="flex items-center justify-between mb-2">
+              <span className="px-4 py-2 rounded-lg text-base font-outfit font-medium bg-[#F0F0F0] text-[#011813]">Marketing</span>
+              <span className="font-outfit font-semibold text-xl text-[#009D77]">$140.00</span>
+            </div>
+            <h3 className="font-outfit font-medium text-lg text-[#011813] mb-2">Google Ads & PPC Campaigns</h3>
+            <div className="flex items-center gap-6 text-[#4E5255] text-sm font-outfit">
+              <span>3hr 35min</span>
+              <span>25 lectures</span>
+            </div>
+          </div>
+          {/* Card 4 */}
+          <div className="bg-white rounded-xl shadow-md p-4 flex flex-col">
+            <img src={uxResearchImg} alt="UX Research & Usability Testing" className="w-full h-48 object-cover rounded-lg mb-4" />
+            <div className="flex items-center justify-between mb-2">
+              <span className="px-4 py-2 rounded-lg text-base font-outfit font-medium bg-[#F0F0F0] text-[#011813]">UI/UX Design</span>
+              <span className="font-outfit font-semibold text-xl text-[#009D77]">$180.00</span>
+            </div>
+            <h3 className="font-outfit font-medium text-lg text-[#011813] mb-2">UX Research & Usability Testing</h3>
+            <div className="flex items-center gap-6 text-[#4E5255] text-sm font-outfit">
+              <span>3hr 35min</span>
+              <span>25 lectures</span>
+            </div>
+          </div>
+          {/* Card 5 */}
+          <div className="bg-white rounded-xl shadow-md p-4 flex flex-col">
+           <img src={financialAccountingImg} alt="Financial Accounting Essentials" className="w-full h-48 object-cover rounded-lg mb-4" />
+            <div className="flex items-center justify-between mb-2">
+              <span className="px-4 py-2 rounded-lg text-base font-outfit font-medium bg-[#F0F0F0] text-[#011813]">Accounting</span>
+              <span className="font-outfit font-semibold text-xl text-[#009D77]">$140.00</span>
+            </div>
+            <h3 className="font-outfit font-medium text-lg text-[#011813] mb-2">Financial Accounting Essentials</h3>
+            <div className="flex items-center gap-6 text-[#4E5255] text-sm font-outfit">
+              <span>2hr 35min</span>
+              <span>20 lectures</span>
+            </div>
+          </div>
+          {/* Card 6 */}
+          <div className="bg-white rounded-xl shadow-md p-4 flex flex-col">
+            <img src={designSystemsImg } alt="Introduction to Design Systems" className="w-full h-48 object-cover rounded-lg mb-4" />
+            <div className="flex items-center justify-between mb-2">
+              <span className="px-4 py-2 rounded-lg text-base font-outfit font-medium bg-[#F0F0F0] text-[#011813]">UI/UX Design</span>
+              <span className="font-outfit font-semibold text-xl text-[#009D77]">$150.00</span>
+            </div>
+            <h3 className="font-outfit font-medium text-lg text-[#011813] mb-2">Introduction to Design Systems</h3>
+            <div className="flex items-center gap-6 text-[#4E5255] text-sm font-outfit">
+              <span>3hr 35min</span>
+              <span>25 lectures</span>
+            </div>
+          </div>
+          {/* Card 7 */}
+          <div className="bg-white rounded-xl shadow-md p-4 flex flex-col">
+            <img src={digitalMarketingImg} alt="Digital Marketing Strategy" className="w-full h-48 object-cover rounded-lg mb-4" />
+            <div className="flex items-center justify-between mb-2">
+              <span className="px-4 py-2 rounded-lg text-base font-outfit font-medium bg-[#F0F0F0] text-[#011813]">Marketing</span>
+              <span className="font-outfit font-semibold text-xl text-[#009D77]">$140.00</span>
+            </div>
+            <h3 className="font-outfit font-medium text-lg text-[#011813] mb-2">Digital Marketing Strategy</h3>
+            <div className="flex items-center gap-6 text-[#4E5255] text-sm font-outfit">
+              <span>2hr 35min</span>
+              <span>20 lectures</span>
+            </div>
+          </div>
+          {/* Card 8 */}
+          <div className="bg-white rounded-xl shadow-md p-4 flex flex-col">
+           <img src={ htmlcssbeyondcourse }  alt="HTML, CSS, and Beyond" className="w-full h-48 object-cover rounded-lg mb-4" />
+            <div className="flex items-center justify-between mb-2">
+              <span className="px-4 py-2 rounded-lg text-base font-outfit font-medium bg-[#F0F0F0] text-[#011813]">Development</span>
+              <span className="font-outfit font-semibold text-xl text-[#009D77]">$180.00</span>
+            </div>
+            <h3 className="font-outfit font-medium text-lg text-[#011813] mb-2">HTML, CSS, and Beyond</h3>
+            <div className="flex items-center gap-6 text-[#4E5255] text-sm font-outfit">
+              <span>4hr 35min</span>
+              <span>30 lectures</span>
+            </div>
+          </div>
+          {/* Card 9 */}
+          <div className="bg-white rounded-xl shadow-md p-4 flex flex-col">
+            <img src={uiuxessentialscourse} alt="UI/UX Essentials for Engaging" className="w-full h-48 object-cover rounded-lg mb-4" />
+            <div className="flex items-center justify-between mb-2">
+              <span className="px-4 py-2 rounded-lg text-base font-outfit font-medium bg-[#F0F0F0] text-[#011813]">UI/UX Design</span>
+              <span className="font-outfit font-semibold text-xl text-[#009D77]">$160.00</span>
+            </div>
+            <h3 className="font-outfit font-medium text-lg text-[#011813] mb-2">UI/UX Essentials for Engaging</h3>
+            <div className="flex items-center gap-6 text-[#4E5255] text-sm font-outfit">
+              <span>3hr 35min</span>
+              <span>25 lectures</span>
+            </div>
+          </div>
+        </div>
+        {/* View More Courses Button */}
+        <div className="flex justify-center mt-8 mb-16">
+          <button className="flex items-center border border-[#011813] rounded-full px-8 py-4 text-[#011813] font-outfit font-medium text-lg hover:bg-[#011813] hover:text-white transition-all duration-300">
+            View More Courses
+          </button>
+        </div>
+      </div>
+      <TeamSection/>
+      <Footer />
     </section>
+    </>
   );
 }

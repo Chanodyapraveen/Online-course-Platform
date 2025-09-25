@@ -32,9 +32,9 @@ const talents = [
 ];
 
 export default function TeamSection() {
-	return (
-		<section style={{ backgroundColor: "#011813" }} className="py-16">
-			<div className="container mx-auto px-4">
+ return (
+ 	<section style={{ backgroundColor: "#011813" }} className="py-16 w-full">
+ 		<div className="w-full px-4">
 				{/* Header Section */}
 				<div className="flex flex-col md:flex-row md:justify-between md:items-center m-10">
 					<h2 className="text-white text-3xl font-semibold mb-4 pl-8 md:mb-0">
@@ -57,7 +57,7 @@ export default function TeamSection() {
 				</div>
 
 				{/* Staggered Talents Grid */}
-				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
 					{talents.map((talent) => (
 						<div
 							key={talent.id}

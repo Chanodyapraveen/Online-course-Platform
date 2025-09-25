@@ -1,3 +1,4 @@
+
 -- CreateTable
 CREATE TABLE "Lesson" (
     "id" TEXT NOT NULL PRIMARY KEY,
