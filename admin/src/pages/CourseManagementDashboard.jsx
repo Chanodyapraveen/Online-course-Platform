@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {  Plus } from 'lucide-react';
 import AddCourseModal from "../components/AddCourseModal"; 
 import Sidebar from "../components/SidebarComponent";
@@ -6,72 +6,44 @@ import AdminHeader from '../components/AdminHeader';
 
 
 const CourseManagementDashboard = () => {
-  const [approvalRequests, setApprovalRequests] = useState([
-    {
-      id: '#1221',
-      title: 'Data Science Essentials',
-      instructor: 'Dr. Liam Walker',
-      category: 'Data Science',
-      price: '$49.99'
-    },
-    {
-      id: '#4556',
-      title: 'Graphic Design Masterclass',
-      instructor: 'Ms. Olivia Turner',
-      category: 'Design',
-      price: '$89.99'
-    }
-  ]);
+  const [courses, setCourses] = useState([]);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [openModal, setOpenModal] = useState(false);
 
-  const [openModal, setOpenModal] = useState(false); 
+  // Refetch courses from backend
+  const fetchCourses = () => {
+    fetch('http://localhost:5000/api/courses')
+      .then(res => res.json())
+      .then(data => setCourses(Array.isArray(data) ? data : []));
+  };
 
-  const courses = [
-    {
-      id: '#2345',
-      title: 'Introduction to Programming',
-      instructor: 'Dr. Eleanor Harbor',
-      category: 'Computer Science',
-      price: '$39.99',
-      enrolled: 150
-    },
-    {
-      id: '#9901',
-      title: 'Advanced Calculus',
-      instructor: 'Prof. Samuel Reinhart',
-      category: 'Mathematics',
-      price: '$79.99',
-      enrolled: 85
-    },
-    {
-      id: '#2840',
-      title: 'Creative Writing Workshop',
-      instructor: 'Ms. Olivia Carter',
-      category: 'Arts & Humanities',
-      price: '$29.99',
-      enrolled: 200
-    },
-    {
-      id: '#3636',
-      title: 'Digital Marketing Fundamentals',
-      instructor: 'Mr. Ethan Davis',
-      category: 'Business',
-      price: '$59.99',
-      enrolled: 120
-    },
-    {
-      id: '#9036',
-      title: 'Spanish for Beginners',
-      instructor: 'Mrs. Isabella Rodriguez',
-      category: 'Languages',
-      price: '$29.99',
-      enrolled: 250
-    }
-  ];
+  // Fetch all courses
+  useEffect(() => {
+    fetchCourses();
+  }, []);
 
-  const handleApproval = (id, action) => {
-    console.log(`${action} course ${id}`);
-    // Remove from approval requests after action
-    setApprovalRequests(prev => prev.filter(request => request.id !== id));
+  // Add new course
+  const handleAddCourse = (e) => {
+    e.preventDefault();
+    fetch('http://localhost:5000/api/courses', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title, description })
+    })
+      .then(res => res.json())
+      .then(course => setCourses(prev => Array.isArray(prev) ? [...prev, course] : [course]));
+    setTitle('');
+    setDescription('');
+  };
+
+  // Approve course
+  const handleApprove = (id) => {
+    fetch(`http://localhost:5000/api/courses/${id}/approve`, { method: 'PUT' })
+      .then(res => res.json())
+      .then(updatedCourse => {
+        setCourses(prev => Array.isArray(prev) ? prev.map(c => c.id === id ? updatedCourse : c) : [updatedCourse]);
+      });
   };
 
   return (
@@ -112,7 +84,7 @@ const CourseManagementDashboard = () => {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {courses.map((course) => (
+                  {Array.isArray(courses) && courses.map((course) => (
                     <tr key={course.id} className="hover:bg-gray-50">
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{course.id}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{course.title}</td>
@@ -145,22 +117,22 @@ const CourseManagementDashboard = () => {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {approvalRequests.map((request) => (
-                    <tr key={request.id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{request.id}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{request.title}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{request.instructor}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{request.category}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">{request.price}</td>
+                  {Array.isArray(courses) && courses.filter(c => !c.approved).map(course => (
+                    <tr key={course.id} className="hover:bg-gray-50">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{course.id}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{course.title}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{course.instructor}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{course.category}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">{course.price}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm space-x-2">
                         <button
-                          onClick={() => handleApproval(request.id, 'approve')}
+                          onClick={() => handleApprove(course.id)}
                           className="bg-green-100 hover:bg-green-200 text-green-800 px-3 py-1 rounded-full text-sm font-medium"
                         >
                           Approve
                         </button>
                         <button
-                          onClick={() => handleApproval(request.id, 'reject')}
+                          onClick={() => handleApprove(course.id, 'reject')}
                           className="bg-red-100 hover:bg-red-200 text-red-800 px-3 py-1 rounded-full text-sm font-medium"
                         >
                           Reject
@@ -176,7 +148,7 @@ const CourseManagementDashboard = () => {
       </div>
 
       {/* Add Course Modal */}
-      {openModal && <AddCourseModal onClose={() => setOpenModal(false)} />}
+  {openModal && <AddCourseModal onClose={() => setOpenModal(false)} onCourseAdded={fetchCourses} />}
     </div>
      </>
   );

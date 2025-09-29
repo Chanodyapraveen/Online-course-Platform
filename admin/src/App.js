@@ -13,8 +13,7 @@ const App = () => {
 
            
         </Routes>
-          
-         
+        <CourseManagementDashboard />
       </div>
     </BrowserRouter>
   )
