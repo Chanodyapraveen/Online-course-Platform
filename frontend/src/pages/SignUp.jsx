@@ -6,10 +6,11 @@ import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import signupImg from "../assets/signup.jpg";
 
 export default function SignUp() {
-  const [firstName, setFirstName] = useState("Didul");
-  const [lastName, setLastName] = useState("Adeesha");
-  const [email, setEmail] = useState("adeeshadidul@gmail.com");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("STUDENT");
   const [showPassword, setShowPassword] = useState(false);
   const [keepLoggedIn, setKeepLoggedIn] = useState(false);
   const [error, setError] = useState("");
@@ -27,7 +28,13 @@ export default function SignUp() {
 
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      console.log("✅ Account created:", { firstName, lastName, email });
+      // Send user info and role to backend
+      await fetch("http://localhost:5000/api/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ firstName, lastName, email, role }),
+      });
+      console.log("✅ Account created:", { firstName, lastName, email, role });
       navigate("/"); // redirect to Home
     } catch (err) {
       setError(err.message);
@@ -103,6 +110,19 @@ export default function SignUp() {
               placeholder="Enter your email"
               required
             />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Role</label>
+            <select
+              value={role}
+              onChange={e => setRole(e.target.value)}
+              className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              required
+            >
+              <option value="STUDENT">Student</option>
+              <option value="INSTRUCTOR">Instructor</option>
+              <option value="ADMIN">Admin</option>
+            </select>
           </div>
 
           <div>

@@ -16,6 +16,8 @@ export default function AddCourseModal({ onClose, onCourseAdded }) {
     formData.append("category", category);
     formData.append("description", description);
     formData.append("price", price);
+    // Set default instructorId to 1 (change as needed)
+    formData.append("instructorId", 1);
     if (image) formData.append("image", image);
 
     try {

@@ -48,8 +48,9 @@ exports.loginUser = async (req, res) => {
     const user = await userService.getUserByEmail(email);
     if (!user) return res.status(400).json({ error: 'Invalid credentials' });
 
-
-  if (password !== user.password) return res.status(400).json({ error: 'Invalid credentials' });
+    const bcrypt = require('bcryptjs');
+    const valid = await bcrypt.compare(password, user.password);
+    if (!valid) return res.status(400).json({ error: 'Invalid credentials' });
 
     const token = jwt.sign(
       { id: user.id, email: user.email, role: user.role },

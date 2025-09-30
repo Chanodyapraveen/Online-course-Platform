@@ -43,7 +43,20 @@ exports.getCourseById = async (req, res) => {
 // Create a new course
 exports.createCourse = async (req, res) => {
   try {
-    const course = await prisma.course.create({ data: req.body });
+    let imageUrl = null;
+    if (req.file) {
+      imageUrl = `/uploads/${req.file.filename}`;
+    }
+    const { title, category, description, price, instructorId } = req.body;
+    const courseData = {
+      title,
+      category,
+      description,
+      price: price ? parseFloat(price) : 0,
+      imageUrl,
+      instructorId: instructorId ? Number(instructorId) : 1,
+    };
+    const course = await prisma.course.create({ data: courseData });
     res.status(201).json(course);
   } catch (err) {
     res.status(400).json({ error: err.message });

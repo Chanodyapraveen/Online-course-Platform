@@ -59,10 +59,10 @@ const AdminDashboard = () => {
                 <UserCheck size={20} />
                 <span>Instructors</span>
               </div>
-              <div className="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg cursor-pointer">
+              <a href="/admin/courses" className="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg cursor-pointer">
                 <BookOpen size={20} />
                 <span>Courses</span>
-              </div>
+              </a>
               <div className="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg cursor-pointer">
                 <DollarSign size={20} />
                 <span>Revenue</span>

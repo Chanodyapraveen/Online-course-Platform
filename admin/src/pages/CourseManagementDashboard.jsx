@@ -6,6 +6,15 @@ import AdminHeader from '../components/AdminHeader';
 
 
 const CourseManagementDashboard = () => {
+  // Remove course
+  const handleRemoveCourse = (id) => {
+    fetch(`http://localhost:5000/api/courses/${id}`, { method: 'DELETE' })
+      .then((res) => {
+        if (res.ok) {
+          setCourses((prev) => prev.filter((c) => c.id !== id));
+        }
+      });
+  };
   const [courses, setCourses] = useState([]);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -22,6 +31,7 @@ const CourseManagementDashboard = () => {
   useEffect(() => {
     fetchCourses();
   }, []);
+
 
   // Add new course
   const handleAddCourse = (e) => {
@@ -81,6 +91,7 @@ const CourseManagementDashboard = () => {
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Enrolled</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
@@ -92,6 +103,14 @@ const CourseManagementDashboard = () => {
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{course.category}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">{course.price}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{course.enrolled}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm">
+                        <button
+                          className="bg-red-100 hover:bg-red-200 text-red-800 px-3 py-1 rounded-full text-sm font-medium"
+                          onClick={() => handleRemoveCourse(course.id)}
+                        >
+                          Remove
+                        </button>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -99,6 +118,7 @@ const CourseManagementDashboard = () => {
             </div>
           </div>
         </div>
+
 
         {/* Course Approval Requests Section */}
         <div>

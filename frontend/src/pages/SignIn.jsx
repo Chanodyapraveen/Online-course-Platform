@@ -25,13 +25,23 @@ export default function SignIn() {
     setError("");
 
     try {
-      await setPersistence(auth, keepLoggedIn ? browserLocalPersistence : browserSessionPersistence);
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      console.log("✅ Logged in:", userCredential.user.email);
-      navigate("/");
+      const res = await fetch("http://localhost:5000/api/users/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
+      if (res.ok && data.user) {
+        if (data.user.role === "ADMIN") {
+          navigate("/admin-dashboard");
+        } else {
+          navigate("/");
+        }
+      } else {
+        setError("Invalid credentials.");
+      }
     } catch (err) {
-      setError(err.message);
-      console.error("❌ Login error:", err.message);
+      setError("Login failed. Please try again.");
     }
   };
 

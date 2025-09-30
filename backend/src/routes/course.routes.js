@@ -6,7 +6,7 @@ const { createCourse, getAllCourses, getCourseById, updateCourse, deleteCourse, 
 
 const router = express.Router();
 
-router.post("/create", authMiddleware(["INSTRUCTOR", "ADMIN"]), createCourse);
+router.post("/", authMiddleware(["INSTRUCTOR", "ADMIN"]), upload.single('image'), createCourse);
 router.get("/", authMiddleware(), getAllCourses);
 router.get("/:id", authMiddleware(), getCourseById);
 router.put("/:id", authMiddleware(["INSTRUCTOR", "ADMIN"]), updateCourse);

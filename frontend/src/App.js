@@ -44,38 +44,10 @@ const App = () => {
           <Route path="/faq" element={<FAQ />} />
 
           {/* Protected routes */}
-          <Route
-            path="/"
-            element={
-              <PrivateRoute user={user}>
-                <Home />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/courses"
-            element={
-              <PrivateRoute user={user}>
-                <CourseSection />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/admin/dashboard"
-            element={
-              <PrivateRoute user={user}>
-                <AdminDashboard />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/admin/courses"
-            element={
-              <PrivateRoute user={user}>
-                <AdminCourse />
-              </PrivateRoute>
-            }
-          />
+          <Route path="/" element={<Home />} />
+          <Route path="/courses" element={<CourseSection />} />
+          <Route path="/admin-dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/courses" element={<AdminCourse />} />
           <Route path="/admin/students" element={<ManageStudents />} />
         </Routes>
       </div>
