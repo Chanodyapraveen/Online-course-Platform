@@ -49,53 +49,84 @@ const initialCourses = [
   },
 ];
 
-const approvalRequests = [
-  {
-    id: "#11223",
-    title: "Data Science Essentials",
-    instructor: "Dr. Liam Walker",
-    category: "Data Science",
-    price: "$69.99",
-  },
-  {
-    id: "#44556",
-    title: "Graphic Design Masterclass",
-    instructor: "Ms. Chloe Turner",
-    category: "Design",
-    price: "$89.99",
-  },
-];
-
 export default function AdminCourse() {
   const [courses, setCourses] = useState(initialCourses);
+  const [approvalRequests, setApprovalRequests] = useState([
+    {
+      id: "#11223",
+      title: "Data Science Essentials",
+      instructor: "Dr. Liam Walker",
+      category: "Data Science",
+      price: "$69.99",
+    },
+    {
+      id: "#44556",
+      title: "Graphic Design Masterclass",
+      instructor: "Ms. Chloe Turner",
+      category: "Design",
+      price: "$89.99",
+    },
+  ]);
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({
-    id: '',
     title: '',
     instructor: '',
     category: '',
+    description: '',
     price: '',
-    enrolled: '',
-    status: 'Active',
+    thumbnail: null,
+    content: null,
   });
 
   const handleOpenModal = () => setShowModal(true);
   const handleCloseModal = () => {
     setShowModal(false);
-    setForm({ id: '', title: '', instructor: '', category: '', price: '', enrolled: '', status: 'Active' });
+    setForm({ title: '', instructor: '', category: '', description: '', price: '', thumbnail: null, content: null });
   };
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
+  
+  const handleFileChange = (e) => {
+    const { name, files } = e.target;
+    setForm((prev) => ({ ...prev, [name]: files[0] }));
+  };
+
+  const handleApproveCourse = (courseId) => {
+    const courseToApprove = approvalRequests.find(course => course.id === courseId);
+    if (courseToApprove) {
+      // Add to main courses list with Active status
+      const approvedCourse = {
+        ...courseToApprove,
+        status: "Active",
+        enrolled: 0 // Start with 0 enrollments
+      };
+      setCourses([approvedCourse, ...courses]);
+      
+      // Remove from approval requests
+      setApprovalRequests(approvalRequests.filter(course => course.id !== courseId));
+    }
+  };
+
+  const handleRejectCourse = (courseId) => {
+    // Simply remove from approval requests
+    setApprovalRequests(approvalRequests.filter(course => course.id !== courseId));
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
     const newCourse = {
-      ...form,
       id: `#${Math.floor(Math.random() * 90000) + 10000}`,
-      enrolled: Number(form.enrolled),
+      title: form.title,
+      instructor: form.instructor,
+      category: form.category,
+      price: `$${parseFloat(form.price).toFixed(2)}`,
+      description: form.description,
+      thumbnail: form.thumbnail,
+      content: form.content,
+      status: "Pending Approval"
     };
-    setCourses([newCourse, ...courses]);
+    setApprovalRequests([newCourse, ...approvalRequests]);
     handleCloseModal();
   };
 
@@ -153,7 +184,7 @@ export default function AdminCourse() {
       {/* Modal for Add Course */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
-          <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-md relative">
+          <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-4xl relative max-h-[90vh] overflow-y-auto">
             <button
               className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 text-2xl font-bold"
               onClick={handleCloseModal}
@@ -161,19 +192,150 @@ export default function AdminCourse() {
             >
               &times;
             </button>
-            <h2 className="text-xl font-bold mb-4">Add New Course</h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <input name="title" value={form.title} onChange={handleChange} required placeholder="Title" className="w-full border rounded px-3 py-2" />
-              <input name="instructor" value={form.instructor} onChange={handleChange} required placeholder="Instructor" className="w-full border rounded px-3 py-2" />
-              <input name="category" value={form.category} onChange={handleChange} required placeholder="Category" className="w-full border rounded px-3 py-2" />
-              <input name="price" value={form.price} onChange={handleChange} required placeholder="Price (e.g. $49.99)" className="w-full border rounded px-3 py-2" />
-              <input name="enrolled" value={form.enrolled} onChange={handleChange} required placeholder="Enrolled" type="number" min="0" className="w-full border rounded px-3 py-2" />
-              <select name="status" value={form.status} onChange={handleChange} className="w-full border rounded px-3 py-2">
-                <option value="Active">Active</option>
-                <option value="Pending">Pending</option>
-                <option value="Draft">Draft</option>
-              </select>
-              <button type="submit" className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 rounded">Add Course</button>
+            <h2 className="text-2xl font-bold mb-6">Add New Course</h2>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Title and Category Row */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Title</label>
+                  <input 
+                    name="title" 
+                    value={form.title} 
+                    onChange={handleChange} 
+                    required 
+                    placeholder="Enter course title" 
+                    className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-transparent" 
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                  <select 
+                    name="category" 
+                    value={form.category} 
+                    onChange={handleChange} 
+                    required 
+                    className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                  >
+                    <option value="">Select category</option>
+                    <option value="Programming">Programming</option>
+                    <option value="Design">Design</option>
+                    <option value="Business">Business</option>
+                    <option value="Marketing">Marketing</option>
+                    <option value="Mathematics">Mathematics</option>
+                    <option value="Science">Science</option>
+                    <option value="Arts & Humanities">Arts & Humanities</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Instructor */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Instructor</label>
+                <input 
+                  name="instructor" 
+                  value={form.instructor} 
+                  onChange={handleChange} 
+                  required 
+                  placeholder="Enter instructor name" 
+                  className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-transparent" 
+                />
+              </div>
+
+              {/* Description */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                <textarea 
+                  name="description" 
+                  value={form.description} 
+                  onChange={handleChange} 
+                  required 
+                  placeholder="Enter course description" 
+                  rows="4"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-transparent resize-none" 
+                />
+              </div>
+
+              {/* Price */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Price</label>
+                <div className="relative">
+                  <span className="absolute left-3 top-3 text-gray-500">$</span>
+                  <input 
+                    name="price" 
+                    value={form.price} 
+                    onChange={handleChange} 
+                    required 
+                    placeholder="0.00" 
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    className="w-full border border-gray-300 rounded-lg pl-8 pr-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-transparent" 
+                  />
+                </div>
+              </div>
+
+              {/* Upload Sections */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Upload Thumbnail */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Upload Thumbnail</label>
+                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-red-500 transition-colors">
+                    <div className="mb-4">
+                      <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                    <input
+                      type="file"
+                      name="thumbnail"
+                      onChange={handleFileChange}
+                      accept=".png,.jpg,.jpeg,.gif"
+                      className="hidden"
+                      id="thumbnail-upload"
+                    />
+                    <label htmlFor="thumbnail-upload" className="cursor-pointer">
+                      <span className="text-red-600 font-medium">Upload a file</span>
+                      <span className="text-gray-500"> or drag and drop</span>
+                    </label>
+                    <p className="text-xs text-gray-500 mt-1">PNG, JPG, GIF up to 10MB</p>
+                  </div>
+                </div>
+
+                {/* Upload Content */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Upload Content</label>
+                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-red-500 transition-colors">
+                    <div className="mb-4">
+                      <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                    </div>
+                    <input
+                      type="file"
+                      name="content"
+                      onChange={handleFileChange}
+                      accept=".pdf,.zip,.mp4"
+                      className="hidden"
+                      id="content-upload"
+                    />
+                    <label htmlFor="content-upload" className="cursor-pointer">
+                      <span className="text-red-600 font-medium">Upload a file</span>
+                      <span className="text-gray-500"> or drag and drop</span>
+                    </label>
+                    <p className="text-xs text-gray-500 mt-1">PDF, ZIP, MP4 up to 1GB</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Submit Button */}
+              <div className="flex justify-end pt-4">
+                <button 
+                  type="submit" 
+                  className="bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-8 rounded-lg transition-colors"
+                >
+                  Add Course
+                </button>
+              </div>
             </form>
           </div>
         </div>
@@ -257,8 +419,18 @@ export default function AdminCourse() {
                     <td className="py-3 px-4 text-gray-500">{r.category}</td>
                     <td className="py-3 px-4 text-gray-500">{r.price}</td>
                     <td className="py-3 px-4 flex gap-2">
-                      <button className="bg-green-100 text-green-700 px-4 py-1 rounded-md font-semibold hover:bg-green-200 transition">Approve</button>
-                      <button className="bg-red-100 text-red-700 px-4 py-1 rounded-md font-semibold hover:bg-red-200 transition">Reject</button>
+                      <button 
+                        onClick={() => handleApproveCourse(r.id)}
+                        className="bg-green-100 text-green-700 px-4 py-1 rounded-md font-semibold hover:bg-green-200 transition"
+                      >
+                        Approve
+                      </button>
+                      <button 
+                        onClick={() => handleRejectCourse(r.id)}
+                        className="bg-red-100 text-red-700 px-4 py-1 rounded-md font-semibold hover:bg-red-200 transition"
+                      >
+                        Reject
+                      </button>
                     </td>
                   </tr>
                 ))}

@@ -44,7 +44,8 @@ const App = () => {
           <Route path="/faq" element={<FAQ />} />
 
           {/* Protected routes */}
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Navigate to="/signin" replace />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/courses" element={<CourseSection />} />
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
           <Route path="/admin/courses" element={<AdminCourse />} />

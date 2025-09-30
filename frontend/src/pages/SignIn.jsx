@@ -35,7 +35,7 @@ export default function SignIn() {
         if (data.user.role === "ADMIN") {
           navigate("/admin-dashboard");
         } else {
-          navigate("/");
+          navigate("/home");
         }
       } else {
         setError("Invalid credentials.");
@@ -48,9 +48,31 @@ export default function SignIn() {
   const handleGoogleSignIn = async () => {
     setError("");
     try {
-      await signInWithPopup(auth, googleProvider);
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+      
+      // Check user role in your backend
+      const res = await fetch("http://localhost:5000/api/users/profile", {
+        method: "GET",
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${await user.getIdToken()}`
+        },
+      });
+      
+      if (res.ok) {
+        const userData = await res.json();
+        if (userData.user && userData.user.role === "ADMIN") {
+          navigate("/admin-dashboard");
+        } else {
+          navigate("/home");
+        }
+      } else {
+        // Fallback if backend check fails
+        navigate("/home");
+      }
+      
       console.log("✅ Google login success");
-      navigate("/");
     } catch (err) {
       setError(err.message);
       console.error("❌ Google login error:", err.message);
