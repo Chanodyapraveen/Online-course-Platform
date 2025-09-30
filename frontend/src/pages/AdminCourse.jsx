@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { BookOpen, Users, UserCheck, DollarSign, BarChart3, Bell } from "lucide-react";
 
 const initialCourses = [
@@ -50,6 +51,7 @@ const initialCourses = [
 ];
 
 export default function AdminCourse() {
+  const navigate = useNavigate();
   const [courses, setCourses] = useState(initialCourses);
   const [approvalRequests, setApprovalRequests] = useState([
     {
@@ -138,10 +140,13 @@ export default function AdminCourse() {
           <span className="text-lg font-bold text-gray-800">EduPlatform</span>
         </div>
         <nav className="flex-1 py-4 space-y-1">
-          <a href="#" className="flex items-center gap-3 px-6 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+          <button 
+            onClick={() => navigate('/admin-dashboard')}
+            className="flex items-center gap-3 px-6 py-3 text-gray-600 hover:bg-gray-50 rounded-lg w-full text-left"
+          >
             <BarChart3 size={20} />
             <span>Dashboard</span>
-          </a>
+          </button>
           <a href="#" className="flex items-center gap-3 px-6 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
             <Users size={20} />
             <span>Students</span>
